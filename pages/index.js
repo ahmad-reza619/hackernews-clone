@@ -1,65 +1,54 @@
-import Head from 'next/head'
-import styles from '../styles/Home.module.css'
+import Head from 'next/head';
+import Link from 'next/link';
+
+const separator = <span>|</span>
 
 export default function Home() {
   return (
-    <div className={styles.container}>
+    <>
       <Head>
-        <title>Create Next App</title>
-        <link rel="icon" href="/favicon.ico" />
+        <title>
+          Hacker News
+        </title>
       </Head>
-
-      <main className={styles.main}>
-        <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
-        </h1>
-
-        <p className={styles.description}>
-          Get started by editing{' '}
-          <code className={styles.code}>pages/index.js</code>
-        </p>
-
-        <div className={styles.grid}>
-          <a href="https://nextjs.org/docs" className={styles.card}>
-            <h3>Documentation &rarr;</h3>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
-
-          <a href="https://nextjs.org/learn" className={styles.card}>
-            <h3>Learn &rarr;</h3>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
-
-          <a
-            href="https://github.com/vercel/next.js/tree/master/examples"
-            className={styles.card}
-          >
-            <h3>Examples &rarr;</h3>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
-
-          <a
-            href="https://vercel.com/import?filter=next.js&utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-          >
-            <h3>Deploy &rarr;</h3>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
-        </div>
-      </main>
-
-      <footer className={styles.footer}>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <img src="/vercel.svg" alt="Vercel Logo" className={styles.logo} />
-        </a>
-      </footer>
-    </div>
+      <div className="max-w-6xl mx-auto mt-4 bg-orange-100">
+        <nav className="flex px-4 list-none bg-orange-600">
+          <Link href="/" >
+            <a className="font-bold cursor-pointer">Hacker News</a>
+          </Link>
+          <div className="flex-1 mx-2">
+            <Link href="/new">
+              <a className="mx-1">new</a>
+            </Link>
+            {separator}
+            <Link href="/top">
+              <a className="mx-1">top</a>
+            </Link>
+            {separator}
+            <Link href="/submit">
+              <a className="mx-1">submit</a>
+            </Link>
+          </div>
+          <Link href="/login">
+            <a className="cursor-pointer">login</a>
+          </Link>
+        </nav>
+        <main className="h-screen p-2">
+          Hello World
+        </main>
+        <div className="h-1 bg-orange-600" />
+        <footer>
+          <div className="flex justify-center w-full my-4">
+            <Link href="/contact">
+              <a>Contact</a>
+            </Link>
+          </div>
+          <div className="flex justify-center w-full my-4">
+            <span className="mr-4">Search:</span>
+            <input className="border border-gray-600 rounded" />
+          </div>
+        </footer>
+      </div>
+    </>
   )
 }
