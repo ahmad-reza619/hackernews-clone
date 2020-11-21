@@ -1,9 +1,33 @@
 import Head from 'next/head';
 import Link from 'next/link';
 
+import useSWR from 'swr';
+import { gql } from 'graphql-request';
+
+import agent from '../utils/graphql-client';
+
+const fetcher = async (query) => await agent.request(query);
+
 const separator = <span>|</span>
 
 export default function Home() {
+  const { data, error } = useSWR(
+    gql`
+      {
+        feeds {
+          data {
+            _id
+            url
+            description
+          }
+        }
+      }
+    `,
+    fetcher,
+  );
+
+  if (error) return <div>Failed to load feeds</div>;
+
   return (
     <>
       <Head>
@@ -33,8 +57,18 @@ export default function Home() {
             <a className="cursor-pointer">login</a>
           </Link>
         </nav>
-        <main className="h-screen p-2">
-          Hello World
+        <main className="p-2">
+          {
+            data
+              ? (
+                <ul className="list-none">
+                  {data.feeds.data.map((link) => (
+                    <li>{link.description} <small className="text-gray-600">({link.url})</small></li>
+                  ))}
+                </ul>
+              )
+              : 'Loading...'
+          }
         </main>
         <div className="h-1 bg-orange-600" />
         <footer>
