@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "lint": "eslint ."
   },
   "dependencies": {
     "faunadb": "^4.0.0",
@@ -19,6 +20,8 @@
   },
   "devDependencies": {
     "@fullhuman/postcss-purgecss": "^3.0.0",
-    "autoprefixer": "^10.0.2"
+    "autoprefixer": "^10.0.2",
+    "eslint": "^7.14.0",
+    "eslint-plugin-react": "^7.21.5"
   }
 }
