@@ -14,7 +14,7 @@ export default function Home() {
   const { data, error } = useSWR(
     gql`
       {
-        feeds {
+        feeds(_size: 30) {
           data {
             _id
             url
