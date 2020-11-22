@@ -5,4 +5,10 @@ type Query {
 type Link {
   url: String!
   description: String!
+  postedBy: User!
+}
+
+type User {
+  email: String! @unique
+  links: [Link!] @relation
 }

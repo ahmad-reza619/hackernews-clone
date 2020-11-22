@@ -1,13 +1,15 @@
 import useSWR from 'swr';
+import PropTypes from 'prop-types';
 import { gql } from 'graphql-request';
 
 import Layout from '../components/Layout';
 
 import agent from '../utils/graphql-client';
+import { getAuthCookie } from '../utils/auth-cookie';
 
-const fetcher = async (query) => await agent.request(query);
 
-export default function Home() {
+export default function Home({ token }) {
+  const fetcher = async (query) => await agent(token).request(query);
   const { data, error } = useSWR(
     gql`
       {
@@ -43,4 +45,13 @@ export default function Home() {
       }
     </Layout>
   )
+}
+
+Home.propTypes = {
+  token: PropTypes.string,
+};
+
+export async function getServerSideProps(ctx) {
+  const token = getAuthCookie(ctx.req);
+  return { props: { token: token || null } };
 }

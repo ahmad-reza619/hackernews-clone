@@ -1,7 +1,9 @@
+import PropTypes from 'prop-types';
 import { gql } from 'graphql-request';
 
 import Layout from '../components/Layout';
 import client from '../utils/graphql-client';
+import { getAuthCookie } from '../utils/auth-cookie';
 
 const mutation = gql`
 mutation createLink($url: String!, $description: String!) {
@@ -12,12 +14,12 @@ mutation createLink($url: String!, $description: String!) {
 }
 `;
 
-export default function Submit() {
+export default function Submit({ token }) {
   async function handleSubmit(evt) {
     evt.preventDefault();
     const form = new FormData(evt.target);
     try {
-      await client.request(
+      await client(token).request(
         mutation,
         {
           url: form.get('url'),
@@ -50,4 +52,13 @@ export default function Submit() {
       </form>
     </Layout>
   );
+}
+
+Submit.propTypes = {
+  token: PropTypes.string,
+};
+
+export async function getServerSideProps(ctx) {
+  const token = getAuthCookie(ctx.req);
+  return { props: { token: token || null } };
 }
