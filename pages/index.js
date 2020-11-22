@@ -63,7 +63,10 @@ export default function Home() {
               ? (
                 <ul className="list-none">
                   {data.feeds.data.map((link) => (
-                    <li>{link.description} <small className="text-gray-600">({link.url})</small></li>
+                    <li key={link._id}>
+                      <a rel="noreferrer" target="_blank" href={`https://${link.url}`}>{link.description}</a>
+                      <small className="text-gray-600">({link.url})</small>
+                    </li>
                   ))}
                 </ul>
               )
