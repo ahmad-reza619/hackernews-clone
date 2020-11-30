@@ -33,16 +33,20 @@ export default function Submit({ token }) {
   return (
     <Layout>
       <form onSubmit={handleSubmit}>
-        <input
-          name="url"
-          placeholder="url"
-          className="block p-1 m-2 border"
-        />
-        <input
-          name="description"
-          placeholder="description"
-          className="block p-1 m-2 border"
-        />
+        <div className="p-1 m-2">
+          <input
+            name="url"
+            placeholder="url"
+            className="border"
+          />
+        </div>
+        <div className="p-1 m-2">
+          <input
+            name="description"
+            placeholder="description"
+            className="border"
+          />
+        </div>
         <button
           type="submit"
           className="p-1 m-2 bg-gray-400"

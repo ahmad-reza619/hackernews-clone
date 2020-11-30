@@ -26,5 +26,6 @@ module.exports = {
       "react": {
         "version": "detect"
       }
-    }
+    },
+    "ignorePatterns": ["/__tests__/*.js"],
 };

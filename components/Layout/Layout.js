@@ -1,6 +1,8 @@
 import Head from 'next/head';
 import Link from 'next/link';
 
+import PropTypes from 'prop-types';
+
 const separator = <span>|</span>
 
 export default function Layout({
@@ -54,3 +56,11 @@ export default function Layout({
     </>
   );
 }
+
+Layout.propTypes = {
+  children: PropTypes.any,
+};
+
+Layout.defaultProps = {
+  children: null,
+};
