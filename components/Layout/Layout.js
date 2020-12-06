@@ -2,13 +2,11 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 
-import useSWR from 'swr';
-
 import PropTypes from 'prop-types';
 
-const separator = <span>|</span>;
+import useUser from '../../utils/hooks/useUser';
 
-const fetcher = url => fetch(url).then(r => r.json());
+const separator = <span>|</span>;
 
 export default function Layout({
   children,
@@ -19,7 +17,7 @@ export default function Layout({
   const {
     data: user,
     mutate: mutateUser,
-  } = useSWR('/api/user', fetcher);
+  } = useUser();
 
   async function logout() {
     const res = await fetch('/api/logout');
