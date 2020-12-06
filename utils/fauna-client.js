@@ -5,6 +5,6 @@ export const guestClient = new faunadb.Client({
 });
 
 export const authClient = (secret) =>
-  faunadb.Client({
+  new faunadb.Client({
     secret,
   });
