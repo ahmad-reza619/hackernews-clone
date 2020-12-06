@@ -3,18 +3,25 @@ import { gql } from 'graphql-request';
 
 import Layout from '../components/Layout';
 import client from '../utils/graphql-client';
+import useUser from '../utils/hooks/useUser';
 import { getAuthCookie } from '../utils/auth-cookie';
 
 const mutation = gql`
-mutation createLink($url: String!, $description: String!) {
-  createLink(data: { url: $url, description: $description }) {
+mutation createLink($url: String!, $description: String!, $postedBy: ID!) {
+  createLink(data: { url: $url, description: $description, postedBy: { connect: $postedBy } }) {
     url
     description
+    postedBy {
+      _id
+    }
   }
 }
 `;
 
 export default function Submit({ token }) {
+
+  const { data: user } = useUser();
+
   async function handleSubmit(evt) {
     evt.preventDefault();
     const form = new FormData(evt.target);
@@ -24,12 +31,14 @@ export default function Submit({ token }) {
         {
           url: form.get('url'),
           description: form.get('description'),
+          postedBy: user && user.id,
         },
       )
     } catch (e) {
       console.error(e);
     }
   }
+
   return (
     <Layout>
       <form onSubmit={handleSubmit}>
