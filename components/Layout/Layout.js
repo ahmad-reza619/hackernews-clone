@@ -1,13 +1,34 @@
 import Head from 'next/head';
+import { useRouter } from 'next/router';
 import Link from 'next/link';
+
+import useSWR from 'swr';
 
 import PropTypes from 'prop-types';
 
-const separator = <span>|</span>
+const separator = <span>|</span>;
+
+const fetcher = url => fetch(url).then(r => r.json());
 
 export default function Layout({
   children,
 }) {
+
+  const router = useRouter();
+
+  const {
+    data: user,
+    mutate: mutateUser,
+  } = useSWR('/api/user', fetcher);
+
+  async function logout() {
+    const res = await fetch('/api/logout');
+    if (res.ok) {
+      mutateUser(null);
+      router.push('/login');
+    }
+  }
+
   return (
     <>
       <Head>
@@ -33,9 +54,15 @@ export default function Layout({
               <a className="mx-1">submit</a>
             </Link>
           </div>
-          <Link href="/login">
-            <a className="cursor-pointer">login</a>
-          </Link>
+          {
+            user ? (
+              <button onClick={logout}>logout</button>
+            ) : (
+              <Link href="/login">
+                <a className="cursor-pointer">login</a>
+              </Link>
+            )
+          }
         </nav>
         <main className="p-2">
           {children}
