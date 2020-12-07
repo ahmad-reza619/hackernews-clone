@@ -6,9 +6,16 @@ type Link {
   url: String!
   description: String!
   postedBy: User!
+  votes: [Vote!] @relation
 }
 
 type User {
   email: String! @unique
   links: [Link!] @relation
+  votes: [Vote!] @relation
+}
+
+type Vote {
+  user: User!
+  link: Link!
 }
