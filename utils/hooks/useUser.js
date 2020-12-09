@@ -1,8 +1,13 @@
-import useSWR from 'swr';
-
-const fetcher = url => fetch(url).then(r => r.json());
+import { useContext } from 'react';
+import { UserContext } from '../UserContext';
 
 export default function useUser() {
-  return useSWR('/api/user', fetcher);
+  const context = useContext(UserContext);
+
+  if (!context) {
+    console.error('Not inside User Context');
+  }
+
+  return context;
 }
 

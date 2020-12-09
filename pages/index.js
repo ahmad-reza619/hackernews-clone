@@ -43,6 +43,8 @@ export default function Home({ token }) {
               {data.feeds.data.map((link, index) => (
                 <li className="flex " key={link._id}>
                   <div className="mr-1 text-gray-600">{index + 1}.</div>
+                  {
+                  }
                   <div className="mr-1 text-gray-600 cursor-pointer">▲</div>
                   <div>
                     <a rel="noreferrer" target="_blank" href={`https://${link.url}`}>{link.description}</a>
