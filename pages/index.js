@@ -1,14 +1,22 @@
 import useSWR from 'swr';
-import PropTypes from 'prop-types';
 import { gql } from 'graphql-request';
 
 import Layout from '../components/Layout';
 
+import useUser from '../utils/hooks/useUser';
 import agent from '../utils/graphql-client';
-import { getAuthCookie } from '../utils/auth-cookie';
 
-export default function Home({ token }) {
-  const fetcher = async (query) => await agent(token).request(query);
+const voteMutation = gql`
+mutation createVote($user: ID!, $link: ID!) {
+  createVote(data: { user: { connect: $user }, link: { connect: $link } }) {
+    _id
+  }
+}
+`;
+
+export default function Home() {
+  const fetcher = async (query) => await agent().request(query);
+  const { data: user } = useUser();
   const { data, error } = useSWR(
     gql`
       {
@@ -32,6 +40,19 @@ export default function Home({ token }) {
     fetcher,
   );
 
+  function onVote(linkIndex) {
+    const link = data.feeds.data[linkIndex];
+    return () => {
+      agent().request(
+        voteMutation,
+        {
+          link: link && link._id,
+          user: user && user.id,
+        },
+      )
+    };
+  }
+
   if (error) return <div>Failed to load feeds</div>;
 
   return (
@@ -44,8 +65,14 @@ export default function Home({ token }) {
                 <li className="flex " key={link._id}>
                   <div className="mr-1 text-gray-600">{index + 1}.</div>
                   {
+                    user &&
+                    <div
+                      className="mr-1 text-gray-600 cursor-pointer"
+                      onClick={onVote(index)}
+                    >
+                      ▲
+                    </div>
                   }
-                  <div className="mr-1 text-gray-600 cursor-pointer">▲</div>
                   <div>
                     <a rel="noreferrer" target="_blank" href={`https://${link.url}`}>{link.description}</a>
                     <small className="text-gray-600">({link.url})</small>
@@ -59,13 +86,4 @@ export default function Home({ token }) {
       }
     </Layout>
   )
-}
-
-Home.propTypes = {
-  token: PropTypes.string,
-};
-
-export async function getServerSideProps(ctx) {
-  const token = getAuthCookie(ctx.req);
-  return { props: { token: token || null } };
 }
